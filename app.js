@@ -159,37 +159,55 @@ function closeModal(id){document.getElementById(id).classList.remove("open");doc
 function closeModalOnBackdrop(e,id){if(e.target.id===id)closeModal(id)}
 function showToast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove("show"),2400)}
 
-// --- Adicione esta função em qualquer parte livre do seu app.js ---
+//Atualização carrossel//
 function initHeroCarousel() {
   const track = document.getElementById('heroCarousel');
   if (!track) return;
 
-  // Filtra apenas os móveis que possuem imagem cadastrada
   const featuredItems = furniture.filter(item => item.image);
   if (featuredItems.length === 0) return;
 
-  // Cria o HTML de cada slide com a foto e o nome correspondente
+  // Insere apenas as imagens no carrossel dentro do retângulo
   track.innerHTML = featuredItems.map(item => `
     <div class="hero-carousel-slide">
       <img src="${item.image}" alt="${item.name}">
-      <div class="hero-carousel-caption">${item.name} (${item.year})</div>
     </div>
   `).join('');
 
+  // Gerencia o título dinâmico embaixo, alinhado à esquerda
+  let container = track.closest('.hero-object');
+  let captionEl = container ? container.querySelector('.hero-carousel-caption') : null;
+  
+  if (!captionEl && container) {
+    captionEl = document.createElement('div');
+    captionEl.className = 'hero-carousel-caption';
+    container.appendChild(captionEl);
+  }
+
   let currentIndex = 0;
   const totalSlides = featuredItems.length;
+
+  function updateCaption() {
+    if (captionEl) {
+      captionEl.textContent = `${featuredItems[currentIndex].name} (${featuredItems[currentIndex].year})`;
+    }
+  }
+
+  updateCaption();
 
   // Roda o carrossel automaticamente a cada 3.5 segundos
   setInterval(() => {
     currentIndex = (currentIndex + 1) % totalSlides;
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    updateCaption();
   }, 3500);
 }
 
-
-// --- Certifique-se de chamar a função dentro do carregamento da página ---
+// Inicialização ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
-  // ... (outras funções que você já inicializa aqui, como carregar a lista de móveis, etc.) ...
-  
-  initHeroCarousel(); // <-- Adicione esta linha aqui dentro
+  renderCatalog();
+  renderCart();
+  renderDashboard();
+  updateCartCount();
+  initHeroCarousel();
 });
