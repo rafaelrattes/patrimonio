@@ -42,14 +42,13 @@ function renderCatalog(){
 }
 function cardHTML(x){
   return `<article class="product-card">
-    <button class="product-image" onclick="openProduct(${x.id})" aria-label="Abrir ${x.name}">
+    <div class="product-image" onclick="openProduct(${x.id})" aria-label="Abrir ${x.name}">
       ${objectHTML(x)}
       <span class="status ${x.status}">${x.statusLabel}</span>
-    </button>
-    <div class="card-info">
+    </div>
+    <div class="card-info" onclick="openProduct(${x.id})">
       <div class="card-meta"><span>${typeLabel(x.type)}</span><span>${x.year}</span></div>
       <h3>${x.name}</h3><p>${x.origin} · ${x.tomb}</p>
-      <div class="card-bottom"><span></span><button class="view-link" onclick="openProduct(${x.id})">Ver peça ↗</button></div>
     </div>
   </article>`;
 }
@@ -167,14 +166,12 @@ function initHeroCarousel() {
   const featuredItems = furniture.filter(item => item.image);
   if (featuredItems.length === 0) return;
 
-  // Insere apenas as imagens no carrossel dentro do retângulo
   track.innerHTML = featuredItems.map(item => `
     <div class="hero-carousel-slide">
       <img src="${item.image}" alt="${item.name}">
     </div>
   `).join('');
 
-  // Gerencia o título dinâmico embaixo, alinhado à esquerda
   let container = track.closest('.hero-object');
   let captionEl = container ? container.querySelector('.hero-carousel-caption') : null;
   
@@ -195,7 +192,6 @@ function initHeroCarousel() {
 
   updateCaption();
 
-  // Roda o carrossel automaticamente a cada 3.5 segundos
   setInterval(() => {
     currentIndex = (currentIndex + 1) % totalSlides;
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
@@ -203,7 +199,6 @@ function initHeroCarousel() {
   }, 3500);
 }
 
-// Inicialização ao carregar a página
 document.addEventListener('DOMContentLoaded', () => {
   renderCatalog();
   renderCart();
