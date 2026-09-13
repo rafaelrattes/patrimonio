@@ -54,7 +54,8 @@ function cardHTML(x){
 }
 function objectHTML(x){
   if(x.image) {
-    return `<img src="${x.image}" alt="${x.name}" style="width: 85%; height: 85%; object-fit: contain; filter: drop-shadow(12px 15px 10px rgba(0,0,0,.12));">`;
+    return `<img src="${x.image}" alt="${x.name}" style="width: 100%; height: 100%; object-fit: contain; background: var(--paper);" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="mini-object mini-${x.type}" style="display:none;"><i class="back"></i><i class="seat"></i><i class="leg a"></i><i class="leg b"></i></div>`;
   }
   if(x.type==="mesa")return `<div class="mini-object mini-table"><i class="top"></i><i class="leg a"></i><i class="leg b"></i></div>`;
   if(x.type==="banco")return `<div class="mini-object mini-bench"><i class="top"></i><i class="leg a"></i><i class="leg b"></i></div>`;
