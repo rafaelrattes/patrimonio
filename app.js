@@ -19,6 +19,41 @@ let requests = JSON.parse(localStorage.getItem("acervoRequests") || JSON.stringi
 
 document.addEventListener("DOMContentLoaded",()=>{renderCatalog();renderCart();renderDashboard();updateCartCount();});
 
+// --- Adicione esta função em qualquer parte livre do seu app.js ---
+function initHeroCarousel() {
+  const track = document.getElementById('heroCarousel');
+  if (!track) return;
+
+  // Filtra apenas os móveis que possuem imagem cadastrada
+  const featuredItems = furniture.filter(item => item.image);
+  if (featuredItems.length === 0) return;
+
+  // Cria o HTML de cada slide com a foto e o nome correspondente
+  track.innerHTML = featuredItems.map(item => `
+    <div class="hero-carousel-slide">
+      <img src="${item.image}" alt="${item.name}">
+      <div class="hero-carousel-caption">${item.name} (${item.year})</div>
+    </div>
+  `).join('');
+
+  let currentIndex = 0;
+  const totalSlides = featuredItems.length;
+
+  // Roda o carrossel automaticamente a cada 3.5 segundos
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+  }, 3500);
+}
+
+
+// --- Certifique-se de chamar a função dentro do carregamento da página ---
+document.addEventListener('DOMContentLoaded', () => {
+  // ... (outras funções que você já inicializa aqui, como carregar a lista de móveis, etc.) ...
+  
+  initHeroCarousel(); // <-- Adicione esta linha aqui dentro
+});
+
 function renderCatalog(){
   const q=(document.getElementById("searchInput").value||"").toLowerCase().trim();
   const cat=document.getElementById("categoryFilter").value;
