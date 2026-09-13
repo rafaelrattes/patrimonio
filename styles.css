@@ -118,15 +118,16 @@ button,input,select,textarea{font:inherit}button,a{cursor:pointer}a{color:inheri
   .header-actions 
   
   .icon-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
   padding: 0 !important;
   border: 1px solid var(--line);
   background: transparent;
-  border-radius: 999px;
+  border-radius: 50% !important;
   flex-shrink: 0;
 }
 
