@@ -116,6 +116,7 @@ button,input,select,textarea{font:inherit}button,a{cursor:pointer}a{color:inheri
 @media(max-width:600px){
   .site-header{padding:0 18px}
   .header-actions 
+  
   .icon-btn {
   display: inline-flex;
   align-items: center;
@@ -126,12 +127,13 @@ button,input,select,textarea{font:inherit}button,a{cursor:pointer}a{color:inheri
   border: 1px solid var(--line);
   background: transparent;
   border-radius: 999px;
+  flex-shrink: 0;
 }
 
 .icon-btn .material-symbols-outlined {
   font-size: 20px;
   line-height: 1;
-},
+}
   .main-nav{display:none}
   .section{padding:65px 20px}
   .hero{padding-top:40px}
