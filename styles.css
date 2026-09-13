@@ -20,11 +20,6 @@ button,input,select,textarea{font:inherit}button,a{cursor:pointer}a{color:inheri
   max-width: 440px; /* Aumenta a largura total da área */
 }
 
-/* REMOVE totalmente o círculo de fundo e qualquer rotação */
-.object-glow {
-  display: none !important;
-}
-
 /* Caixa onde o carrossel roda (reto, sem rotação, maior e sem moldura pesada) */
 .hero-carousel-container {
   width: 100%;
