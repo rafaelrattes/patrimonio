@@ -27,9 +27,6 @@ button,input,select,textarea{font:inherit}button,a{cursor:pointer}a{color:inheri
   overflow: hidden;
   position: relative;
   border-radius: 16px;
-  background: rgba(0, 0, 0, 0.02); /* Fundo bem sutil ou pode deixar transparente se preferir */
-  transform: none !important; /* Garante que está totalmente reto */
-  box-shadow: 0 20px 40px rgba(0,0,0,0.06); /* Sombra elegante e limpa */
 }
 
 .hero-carousel-track {
