@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f5f3ee" />
+  <meta name="description" content="Acervo restaurado de mobiliário da UFPE — catálogo, reserva, solicitação e memória dos objetos." />
+  <title>Acervo Vivo — Mobiliário UFPE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <!-- O componente 3D permite exibir arquivos .glb/.gltf reais posteriormente. -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+
+<body>
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#" onclick="navigate('home'); return false;">
+      <span class="brand-mark">AV</span>
+      <span>
+        <strong>Acervo Vivo</strong>
+        <small>Mobiliário UFPE</small>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navegação principal">
+      <a href="#acervo" onclick="navigate('catalog')">Acervo</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#sobre">Projeto</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" title="Solicitações" onclick="openRequests()">
+        <span>◌</span>
+      </button>
+      <button class="cart-btn" onclick="toggleCart()">
+        Carrinho <span id="cartCount" class="count">0</span>
+      </button>
+      <button class="profile-btn" onclick="openLogin()">Entrar</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero section">
+      <div class="hero-copy">
+        <span class="eyebrow">PATRIMÔNIO • RESTAURO • REUSO</span>
+        <h1>Objetos que carregam<br><em>memórias.</em></h1>
+        <p>
+          Um acervo vivo do mobiliário restaurado da UFPE. Explore a história das peças,
+          visualize-as em 3D e solicite mobiliários para novos espaços e departamentos.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-dark" href="#acervo" onclick="navigate('catalog')">Explorar acervo <span>↗</span></a>
+          <button class="btn btn-light" onclick="openRequestModal()">Solicitar uma peça <span>+</span></button>
+        </div>
+      </div>
+
+      <div class="hero-object">
+        <div class="object-glow"></div>
+        <div class="chair-illustration" aria-label="Ilustração de cadeira de madeira restaurada">
+          <div class="chair-back"></div>
+          <div class="chair-seat"></div>
+          <div class="chair-leg l1"></div>
+          <div class="chair-leg l2"></div>
+          <div class="chair-leg l3"></div>
+          <div class="chair-leg l4"></div>
+        </div>
+        <div class="hero-caption">
+          <span>PEÇA EM DESTAQUE</span>
+          <strong>Cadeira Escolar • Série 1968</strong>
+        </div>
+      </div>
+    </section>
+
+    <section id="acervo" class="section catalog-section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">ACERVO</span>
+          <h2>Encontre pelo que<br>você procura.</h2>
+        </div>
+        <p id="resultInfo">8 peças encontradas</p>
+      </div>
+
+      <div class="filters">
+        <div class="search-box">
+          <span>⌕</span>
+          <input id="searchInput" type="search" placeholder="Buscar por nome, tombamento, década..." oninput="renderCatalog()" />
+        </div>
+        <select id="categoryFilter" onchange="renderCatalog()">
+          <option value="all">Todos os tipos</option>
+          <option value="cadeira">Cadeiras</option>
+          <option value="mesa">Mesas</option>
+          <option value="banco">Bancos</option>
+          <option value="armario">Armários</option>
+          <option value="outros">Outros</option>
+        </select>
+        <select id="statusFilter" onchange="renderCatalog()">
+          <option value="all">Todos os status</option>
+          <option value="available">Disponíveis</option>
+          <option value="reserved">Em reserva</option>
+          <option value="queue">Fila de espera</option>
+          <option value="restoration">Em restauro</option>
+        </select>
+        <select id="sortFilter" onchange="renderCatalog()">
+          <option value="featured">Destaques</option>
+          <option value="oldest">Mais antigos</option>
+          <option value="newest">Mais recentes</option>
+          <option value="name">Nome A–Z</option>
+        </select>
+      </div>
+
+      <div class="category-pills">
+        <button class="pill active" onclick="quickFilter('all', this)">Todos <span>8</span></button>
+        <button class="pill" onclick="quickFilter('cadeira', this)">Cadeiras <span>4</span></button>
+        <button class="pill" onclick="quickFilter('mesa', this)">Mesas <span>2</span></button>
+        <button class="pill" onclick="quickFilter('banco', this)">Bancos <span>1</span></button>
+        <button class="pill" onclick="quickFilter('armario', this)">Armários <span>1</span></button>
+      </div>
+
+      <div id="catalogGrid" class="catalog-grid"></div>
+    </section>
+
+    <section id="como-funciona" class="section process-section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">COMO FUNCIONA</span>
+          <h2>Do acervo para<br>um novo uso.</h2>
+        </div>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <span>01</span>
+          <h3>Explore</h3>
+          <p>Conheça as peças, sua história, estado de conservação, tombamento e disponibilidade.</p>
+        </article>
+        <article class="step">
+          <span>02</span>
+          <h3>Solicite</h3>
+          <p>Adicione ao carrinho e informe o departamento, local de destino e responsável pela solicitação.</p>
+        </article>
+        <article class="step">
+          <span>03</span>
+          <h3>Receba</h3>
+          <p>O grupo de pesquisa avalia a solicitação, organiza a retirada e atualiza o destino da peça.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="sobre" class="section about-section">
+      <div class="about-image">
+        <div class="archive-stamp">UFPE<br>ACERVO<br>VIVO</div>
+      </div>
+      <div class="about-copy">
+        <span class="eyebrow">O PROJETO</span>
+        <h2>Preservar também é dar continuidade.</h2>
+        <p>
+          O projeto conecta patrimônio, conservação, pesquisa e uso cotidiano. Em vez de permanecer
+          armazenado, cada objeto restaurado pode voltar a fazer parte da vida universitária.
+        </p>
+        <div class="facts">
+          <div><strong>1960–80</strong><span>Peças históricas</span></div>
+          <div><strong>3D</strong><span>Documentação digital</span></div>
+          <div><strong>100%</strong><span>Rastreabilidade</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div>
+      <strong>Acervo Vivo</strong>
+      <span>Projeto de pesquisa • UFPE</span>
+    </div>
+    <div class="footer-links">
+      <a href="#acervo">Acervo</a>
+      <a href="#como-funciona">Como funciona</a>
+      <button onclick="openAdmin()">Área administrativa</button>
+    </div>
+    <span>© 2026</span>
+  </footer>
+
+  <!-- Drawer do carrinho -->
+  <aside id="cartDrawer" class="drawer" aria-label="Carrinho">
+    <div class="drawer-head">
+      <div><span class="eyebrow">SOLICITAÇÃO</span><h3>Seu carrinho</h3></div>
+      <button class="close-btn" onclick="toggleCart()">×</button>
+    </div>
+    <div id="cartItems" class="drawer-body"></div>
+    <div class="drawer-footer">
+      <div class="cart-summary"><span>Peças selecionadas</span><strong id="cartTotal">0</strong></div>
+      <button class="btn btn-dark full" onclick="checkout()">Continuar solicitação <span>→</span></button>
+      <small>Não é uma venda comercial. A disponibilidade está sujeita à avaliação do patrimônio/projeto.</small>
+    </div>
+  </aside>
+  <div id="drawerOverlay" class="overlay" onclick="toggleCart()"></div>
+
+  <!-- Modal de produto -->
+  <div id="productModal" class="modal-wrap" onclick="closeModalOnBackdrop(event, 'productModal')">
+    <div class="modal product-modal">
+      <button class="modal-close" onclick="closeModal('productModal')">×</button>
+      <div id="productDetail"></div>
+    </div>
+  </div>
+
+  <!-- Modal de login -->
+  <div id="loginModal" class="modal-wrap" onclick="closeModalOnBackdrop(event, 'loginModal')">
+    <div class="modal small-modal">
+      <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+      <span class="eyebrow">ACESSO UFPE</span>
+      <h2>Entrar no acervo</h2>
+      <p>Use seu e-mail institucional para acompanhar solicitações e reservas.</p>
+      <label>E-mail institucional<input id="loginEmail" type="email" placeholder="nome@ufpe.br"></label>
+      <label>Senha<input id="loginPassword" type="password" placeholder="••••••••"></label>
+      <button class="btn btn-dark full" onclick="login()">Entrar <span>→</span></button>
+      <p class="modal-note">Protótipo: a autenticação real deverá ser integrada ao sistema institucional.</p>
+    </div>
+  </div>
+
+  <!-- Modal de nova solicitação -->
+  <div id="requestModal" class="modal-wrap" onclick="closeModalOnBackdrop(event, 'requestModal')">
+    <div class="modal small-modal">
+      <button class="modal-close" onclick="closeModal('requestModal')">×</button>
+      <span class="eyebrow">NOVA SOLICITAÇÃO</span>
+      <h2>O que você precisa?</h2>
+      <p>Descreva o mobiliário desejado. O projeto poderá procurar uma peça disponível ou avaliar uma nova restauração.</p>
+      <label>Tipo de mobiliário
+        <select id="requestType">
+          <option>Cadeira</option><option>Mesa</option><option>Banco</option><option>Armário</option><option>Outro</option>
+        </select>
+      </label>
+      <label>Quantidade<input id="requestQty" type="number" min="1" value="1"></label>
+      <label>Departamento / setor<input id="requestDept" type="text" placeholder="Ex.: Departamento de Design"></label>
+      <label>Observações<textarea id="requestNotes" rows="3" placeholder="Dimensões, estilo, uso, localização..."></textarea></label>
+      <button class="btn btn-dark full" onclick="submitNewRequest()">Enviar solicitação <span>→</span></button>
+    </div>
+  </div>
+
+  <!-- Dashboard administrativo -->
+  <div id="adminModal" class="modal-wrap" onclick="closeModalOnBackdrop(event, 'adminModal')">
+    <div class="modal admin-modal">
+      <button class="modal-close" onclick="closeModal('adminModal')">×</button>
+      <div class="admin-top">
+        <div><span class="eyebrow">PAINEL DO PROJETO</span><h2>Visão geral do acervo</h2></div>
+        <button class="btn btn-light" onclick="exportCSV()">Exportar CSV ↓</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat"><span>Acervo cadastrado</span><strong id="statTotal">8</strong><small>peças</small></div>
+        <div class="stat"><span>Disponíveis</span><strong id="statAvailable">4</strong><small>para solicitação</small></div>
+        <div class="stat"><span>Em reserva</span><strong id="statReserved">1</strong><small>aguardando retirada</small></div>
+        <div class="stat"><span>Solicitações</span><strong id="statRequests">6</strong><small>neste ciclo</small></div>
+      </div>
+      <div class="dashboard-grid">
+        <section class="dashboard-card">
+          <div class="card-head"><h3>Fluxo das peças</h3><span>Atualizado agora</span></div>
+          <div class="bar-row"><span>Disponíveis</span><div><i style="width:50%"></i></div><b>4</b></div>
+          <div class="bar-row"><span>Reservadas</span><div><i style="width:13%"></i></div><b>1</b></div>
+          <div class="bar-row"><span>Fila de espera</span><div><i style="width:25%"></i></div><b>2</b></div>
+          <div class="bar-row"><span>Em restauro</span><div><i style="width:13%"></i></div><b>1</b></div>
+        </section>
+        <section class="dashboard-card">
+          <div class="card-head"><h3>Últimas solicitações</h3><button onclick="openRequests()">ver todas</button></div>
+          <div id="requestList" class="request-list"></div>
+        </section>
+      </div>
+      <section class="dashboard-card table-card">
+        <div class="card-head"><h3>Destinação do acervo</h3><span>Rastreabilidade</span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Peça</th><th>Tombamento</th><th>Destino</th><th>Status</th><th>Atualização</th></tr></thead>
+            <tbody id="adminTable"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
